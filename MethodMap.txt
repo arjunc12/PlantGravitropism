@@ -1,0 +1,151 @@
+Where to find the methods below:
+
+A method that takes an arbor reconstruction file as input and outputs a networkx object. 
+    AlleyMethods/NetworkxConverstion.ipynb : connectedArbor(file)
+    Use connectedArbor(file) to read an arbor file and return networkx object 
+        takes string of file name as input
+        output does have lateral roots connected to main root
+
+A method that takes an arbor (represented as a networkx object) and computes the wiring cost
+    AlleyMethods/WringCostAndConductionDelay.ipynb  : calculateWC(plant)
+    Use calculateWC(plant) to calculate wirng cost
+        takes networx object as input
+            make sure the object has lateral roots connected to main root
+
+A method that takes an arbor (represented as a networkx object) and computes the conduction delay
+    AlleyMethods/WringCostAndConductionDelay.ipynb  : calculateCD(plant)
+    Use calculateCD(plant) to calculate wiring cost
+        takes networx object as input
+            make sure the object has lateral roots connected to main root
+
+A method that takes an arbor, G, and alpha, and computes the optimal arbor
+    AlleyMethods/NetworkxConverstion.ipynb : optimalArbor(arbor, G, alpha)
+    Use optimalArbor(arbor, G, alpha) to take a given networkx arbor and return optimal networkx arbor given G and alpha
+    takes givin networkx arbor from connectedArbor, G and alpha
+    output optimal networx arbor
+
+A method that takes an arbor, G, and alpha, and plots the optimal arbor (it should use the previous method)
+    AlleyMethods/Ploting.ipynb : FileDraw(file,G,alpha) or supperImpose(file,G,alpha)
+    #Use FileDraw(file,G,alpha) to draw 3 graphs orignal, optimal then orignal and optimal supper imposed
+    #input: 
+        #file:string of file
+        #G, alpha
+    #output: 3 graphs:
+        #oringal 
+        #optimal given G and alpha
+        #oringinal and optimal super imposed
+        
+#Use supperImpose(file,G,alpha) to just draw the orignal and optimal supperimposed on eachother
+    #input: 
+        #file:string of file
+        #G, alpha
+    #output:
+        #oringal and optimal given G and alpha superimposed
+
+A method that takes an arbor and computes the pareto curve of optimal solutions
+    AlleyMethods/Front.ipynb : makeFront(ogPlant, MinG, MaxG, stepG)
+    #use makeFront(ogPlant, MinG, MaxG, stepG) to create
+    #input:
+        #ogPlant: networx object with connections to the main root
+        #MinG: the minium value you want for G
+        #MaxG: the maximum value you want for G
+        #stepG: the length of each step
+    #output:
+        #ArrayofTraces: an array of traces for plotly
+        #front: networx object that is the pareto front with nodes with below stored
+            #coordinate = (cd,wc)
+            #G
+            #alpha
+
+A method that takes an arbor and computes the min/max possible G
+    Not Done Yet    
+
+A method that computes the similarity between two trees based on the euclidean distance between their cost vectors
+    AlleyMethods/Distances.ipynb : euclidDis(plant1, plant2)
+    #Use euclidDis(plant1, plant2) to calculate euclidean distance of cost vectors
+    #input: two networx arbors
+    #output: euclidian distance of the cost vectors
+
+A method that computes the similarity between two trees based on the scaling distance between their cost vectors
+    Not Done Yet
+    
+A method that computes the similarity between two arbors based on comparing their lateral root points (Alley's method)
+    AlleyMethods/Distances.ipynb : pointDif(plant1,plant2)
+    #Use pointDif(plant1,plant2) to calculate point differnce of two arbors
+    #input: two networx arbors
+    #output: point differnce of the two plants
+
+A method that takes an arbor, and computes the values of G and \alpha that best explain the arbor. It does so by computing the pareto surface of optimal solutions, comparing the observed arbor to each optimal arbor, and computing which optimal arbor was most similar
+    AlleyMethods/MakeTabel.ipynb : findTheBests(ogPlant,Row,file)
+    #Use findTheBests(ogPlant,Row,file) to find the best Gs and alphas uing diffent methods
+    #input:
+        #ogPlant: networx object of plant
+        #Row: the row in the tabel to append data to
+        #file this is used in supperimpose graphing
+    #output: 
+        #prints out each G as it goes along finding the best point distance G and alpha
+        #Graphs:
+            #paeto front with below in differnt colors
+                #orignal (cd,wc) not on the front
+                #point (cd,wc) 
+                #Euclidiean (cd,wc)
+                #Scaler
+            #oringal arbor and optimal arbor given best G and Alpha using the point method
+            #oringal arbor and optimal arbor given best G and Alpha using the euclidian method
+            #oringal arbor and optimal arbor given best G and Alpha using the scalar method
+        #returns: Row
+            #Row: ['file name', 'Point G', 'Point alpha', 'Euclid G', 'Euclid alpha', 'Scaler G', 'Scaler alpha']
+            
+
+AlleyMethods/Closest.ipynb 
+    #Use PointbestDiffernce(Plant) to find best G and alpha using point differnce
+    #input: networkx arbor
+    #output:
+        #closest optimal networkx arbor
+        #Closest G
+        #closest alpha
+        
+#Use ClosestEuclid(originalPlant) to find best G and alpha using euclidan distance 
+    #input: netowrkx arbor for plant
+    #output:
+        #front: networkx object of all nodes with coordinates (conduction delay, wiring cost) for diffent Gs and alphas
+        #orignal plant
+        #the best euclid distance
+        #bestNodeArray
+            #the cordinate which is (conducton delay, wiringcost)
+            #the best G value
+            #best alpha value
+        #x: conduction delay
+        #y:wiring cost
+        
+#Use ClosEuclid(ogPlant,front) to find best G and alpha using Eucliding distance given a pareto front
+    #input:
+        #ogPlant: networkx object plant arbor with connected latteral roots
+        #front: networx object that is the paeto front
+    #output:
+        # G is the best G value
+        # alpha is the best alpha value
+        # bestDis the distance for the Euclidan distsnce
+        #bestCD the conduction delay value that is the closest
+        #bestWC the wiring cost value that is the closest
+        
+#Use ClosestScaling(ogPlant,front) to find the best G and alpha using scaling distance method given a pareto fron
+     #input:
+        #ogPlant: networkx object plant arbor with connected latteral roots
+        #front: networx object that is the paeto front
+     #output:
+        # G is the best G value
+        # alpha is the best alpha value
+        # bestDis the distance for the Euclidan distsnce
+        #bestCD the conduction delay value that is the closest
+        #bestWC the wiring cost value that is the closest
+#Use PointbestDiffernceAndFront(Plant) to find best G and alpha using point differnce
+    #input: networx arbor
+    #output:
+        #closest optimal networkx arbor using point diffence method
+        #Closest G
+        #closest alpha
+        #pareto front as Networkx object
+    #this way you can kill two birds with one stone 
+        #ie contsruct the peato front while looking for the best arbor using the point differnce method
+        

@@ -11,7 +11,7 @@ from Distances import *
         #Closest G
         #closest alpha
 def PointbestDiffernce(Plant):
-    Grange = np.arange(-2, 3, 1)
+    Grange = np.arange(-2, 3, 0.2)
     bestG = -2
     aRange = np.arange(0,1.1,.1)
     bestA =0
@@ -179,7 +179,7 @@ def ClosestScaling(ogPlant,front):
     #this way you can kill two birds with one stone 
         #ie contsruct the peato front while looking for the best arbor using the point differnce method
 def PointbestDiffernceAndFront(Plant):
-    Grange = np.arange(-2, 3, 1)
+    Grange = np.arange(-2, 3, 0.2)
     bestG = -2
     aRange = np.arange(0,1.1,.1)
     bestA =0

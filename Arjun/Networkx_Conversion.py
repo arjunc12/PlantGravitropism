@@ -344,7 +344,11 @@ def deAngleCurve(G,al,p,q,theta,a,b,c,d,CD):
     qn = pq[1][0]
     tmax = rotateLine([c],[d], theta, a,b)
     tmax = tmax[1][0]
-    best = findBest(tmax, G,pn,qn,al,CD)
+    best = None
+    if al == 0:
+        best = findBest(tmax, G,pn,qn,al,CD)
+    else:
+        best = findBestRichards(tmax, G,pn,qn,al,CD)
     #returns best length and t, actulal lenth
     t = best[1]
     actlen =best[2]
@@ -393,6 +397,52 @@ def findBest(Tmax,G,p,q,a,CD):
     bestT = t
     actLen =bestLength
     while t >= Tmax:
+        b = (q - G * (p**2) - t)/p
+        if p>0:
+            x =np.linspace(0, p, num=50)
+        elif p < 0:
+            x =np.linspace(p, 0, num=50)
+        lot = np.sqrt(1+(2*G*x + ((q-G*(p**2)-t)/p))**2)
+        lot = scipy.integrate.trapezoid(lot,x)
+        y= (1 - a) *(lot) + a *(lot+CD+t)
+        length = y
+        if length < bestLength:
+            bestLength = length
+            bestT = t
+            actLen=lot
+        #t = t - 0.001 #last
+        t = t - 0.01 #last 
+    return(bestLength,bestT,actLen)
+
+#used in deAngleCurve
+# finds the best connection on a vetical mainroot
+#input:
+    #Tmax: the length of the main root segment 
+    #G
+    #(p,q) the new lateral root tip now that we have deganled it
+    #a : is alpha
+    #CD: conduction delay
+#returns:
+    #the alpha score
+    #where it connects
+    #length of curve
+def findBestRichards(Tmax,G,p,q,a,CD):
+    t=0
+    Tmax = -Tmax
+    bestLength= float("inf")
+    bestT = t
+    bestTCandidates = [0, Tmax]
+    assert a != 0
+    radical_inside = ((G ** 2) * (p ** 2)) + (1.0 / ((2 * a) - (a ** 2)))
+    radical = radical_inside ** 0.5
+    sol1 = (-G * p) + (1 - a) * radical
+    sol2 = (-G * p) - (1 - a) * radical
+    if sol1 <= 0 and sol1 >= Tmax:
+        bestTCandidates.append(sol1)
+    if sol2 <= 0 and sol2 >= Tmax:
+        bestTCandidates.append(sol2)
+    actLen =bestLength
+    for t in bestTCandidates:
         b = (q - G * (p**2) - t)/p
         if p>0:
             x =np.linspace(0, p, num=50)

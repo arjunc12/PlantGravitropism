@@ -435,11 +435,13 @@ def findBestRichards(Tmax,G,p,q,a,CD):
     assert a != 0
     radical_inside = ((G ** 2) * (p ** 2)) + (1.0 / ((2 * a) - (a ** 2)))
     radical = radical_inside ** 0.5
-    sol1 = (-G * p) + (1 - a) * radical
-    sol2 = (-G * p) - (1 - a) * radical
-    if sol1 <= 0 and sol1 >= Tmax:
+    bstar1 = (-G * p) + (1 - a) * radical
+    bstar2 = (-G * p) - (1 - a) * radical
+    sol1 = q - (G * (p ** 2)) - (p * bstar1)
+    sol2 = q - (G * (p ** 2)) - (p * bstar2)
+    if sol1 >= 0 and sol1 <= Tmax:
         bestTCandidates.append(sol1)
-    if sol2 <= 0 and sol2 >= Tmax:
+    if sol2 >= 0 and sol2 <= Tmax:
         bestTCandidates.append(sol2)
     actLen =bestLength
     for t in bestTCandidates:
